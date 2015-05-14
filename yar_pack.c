@@ -19,6 +19,7 @@
 #include <stdio.h>
 #include <stdarg.h>     /* for va_list */
 #include <string.h>
+
 #include "msgpack.h"
 
 #include "yar_common.h"

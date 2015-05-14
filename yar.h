@@ -21,6 +21,10 @@
 
 #define YAR_VERSION "1.0.2-dev"
 
+#ifdef __MACH__
+typedef unsigned int uint;
+#endif
+
 typedef struct _yar_payload {
 	char *data;
 	uint size;
