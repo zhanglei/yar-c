@@ -129,14 +129,14 @@ int yar_pack_push_double(yar_packager *packager, double num) /* {{{ */ {
 int yar_pack_push_string(yar_packager *packager, char *str, uint len) /* {{{ */ {
 	int ret;
 	msgpack_packer *pk = packager->pk;
-	
-	ret = msgpack_pack_raw(pk, len);
+
+	ret = msgpack_pack_str(pk, len);
 
 	if (ret < 0) {
 		return 0;
 	}
-	
-	if (msgpack_pack_raw_body(pk, str, len) < 0) {
+
+	if (msgpack_pack_str_body(pk, str, len) < 0) {
 		return 0;
 	}
 
@@ -209,10 +209,10 @@ yar_data_type yar_unpack_data_type(const yar_data *data, uint *size) /* {{{ */ {
 			return YAR_DATA_ULONG;
 		case MSGPACK_OBJECT_NEGATIVE_INTEGER:
 			return YAR_DATA_LONG;
-		case MSGPACK_OBJECT_DOUBLE:
+		case MSGPACK_OBJECT_FLOAT:
 			return YAR_DATA_DOUBLE;
-		case MSGPACK_OBJECT_RAW:
-			*size = obj->via.raw.size;
+		case MSGPACK_OBJECT_STR:
+			*size = obj->via.str.size;
 			return YAR_DATA_STRING;
 		case MSGPACK_OBJECT_ARRAY:
 			*size = obj->via.array.size;
@@ -241,11 +241,11 @@ int yar_unpack_data_value(const yar_data *data, void *arg) /* {{{ */ {
 		case MSGPACK_OBJECT_NEGATIVE_INTEGER:
 			*(long *)arg = obj->via.i64;
 			return YAR_DATA_LONG;
-		case MSGPACK_OBJECT_DOUBLE:
-			*(double *)arg = obj->via.dec;
+		case MSGPACK_OBJECT_FLOAT:
+			*(double *)arg = obj->via.f64;
 			return YAR_DATA_DOUBLE;
-		case MSGPACK_OBJECT_RAW:
-			*(const char **)arg = obj->via.raw.ptr;
+		case MSGPACK_OBJECT_STR:
+			*(const char **)arg = obj->via.str.ptr;
 			return YAR_DATA_STRING;
 		case MSGPACK_OBJECT_ARRAY:
 			*(const yar_data **)arg = (yar_data *)obj->via.array.ptr;

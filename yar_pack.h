@@ -19,8 +19,8 @@
 #ifndef YAR_PACK_H
 #define YAR_PACK_H
 
-#ifdef __MACH__
-typedef unsigned long ulong;
+#ifndef ulong
+#define ulong unsigned long
 #endif
 
 typedef enum _yar_data_type {
